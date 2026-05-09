@@ -15,7 +15,14 @@
 
 @layer base {
   html {
-    @apply font-nunito-sans;
+    @apply font-nunito-sans text-very-dark-blue-2 dark:text-white;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-very-light-gray dark:bg-very-dark-blue;
   }
   button,
   a {
@@ -24,11 +31,15 @@
 }
 
 @utility focus-visible-ring {
-  @apply focus-visible:ring-very-dark-blue-2 dark:focus-visible:ring-very-light-gray focus-visible:ring-offset-very-dark-blue-2 dark:focus-visible:ring-offset-very-light-gray focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
+  @apply focus-visible:ring-very-dark-blue-2 focus-visible:ring-offset-very-dark-blue-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-white dark:focus-visible:ring-offset-white;
 }
 
 @utility footer-link {
-  @apply text-very-dark-blue dark:text-very-light-gray rounded-xs font-bold;
+  @apply text-very-dark-blue rounded-xs font-bold dark:text-white;
+}
+
+@utility shadow-header {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.0562443);
 }
 
 ::view-transition-old(root),

@@ -1,5 +1,4 @@
-import { Footer } from "@/components/layout";
-import { ThemeToggle } from "@/components/ui";
+import { Footer, Header } from "@/components/layout";
 import { Providers } from "@/providers";
 import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
@@ -44,7 +43,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-dvh w-full flex-col">
         <Providers>
-          <ThemeToggle />
+          <Header />
           {children}
         </Providers>
         <Footer />
