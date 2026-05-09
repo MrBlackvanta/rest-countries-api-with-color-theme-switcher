@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-blue: hsl(209, 23%, 22%);
+  --color-very-dark-blue: hsl(207, 26%, 17%);
+  --color-very-dark-blue-2: hsl(200, 15%, 8%);
+  --color-dark-gray: hsl(0, 0%, 52%);
+  --color-very-light-gray: hsl(0, 0%, 98%);
+  --color-white: hsl(0, 0%, 100%);
+
+  --font-nunito-sans: "Nunito Sans", sans-serif;
+}
+
+@layer base {
+  html {
+    @apply font-nunito-sans;
+  }
+  button,
+  a {
+    @apply focus-visible-ring;
+  }
+}
+
+@utility focus-visible-ring {
+  @apply focus-visible:ring-accent-cyan focus-visible:ring-offset-accent-cyan focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
+}
+
+@utility footer-link {
+  @apply text-accent-blue rounded-xs font-bold;
+}
