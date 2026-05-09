@@ -1,4 +1,4 @@
 public interface ICountryService
 {
-    IReadOnlyList<Country> GetAll();
+    PagedResult<Country> Search(string? name, string? region, int page, int pageSize);
 }

@@ -16,6 +16,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/countries", (ICountryService countries) => countries.GetAll());
+app.MapGet(
+    "/countries",
+    (ICountryService countries, string? name, string? region, int page = 1, int pageSize = 20) =>
+        countries.Search(name, region, page, pageSize)
+);
 
 app.Run();
