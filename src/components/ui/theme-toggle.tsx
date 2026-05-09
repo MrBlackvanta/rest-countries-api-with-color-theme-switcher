@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import { CrescentSvg } from "@/components/icons";
 
 export default function ThemeToggle() {
   const { setTheme } = useTheme();
@@ -21,8 +22,9 @@ export default function ThemeToggle() {
   };
 
   return (
-    <button onClick={toggleTheme}>
-      Switch to <span className="dark:hidden">Dark</span>
+    <button onClick={toggleTheme} className="flex items-center gap-2">
+      <CrescentSvg />
+      <span className="dark:hidden">Dark</span>
       <span className="hidden dark:inline">Light</span> Mode
     </button>
   );
