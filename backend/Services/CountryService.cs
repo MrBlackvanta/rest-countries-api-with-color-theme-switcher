@@ -1,15 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
-public class CountryService : ICountryService
+public class CountryService(CountriesDbContext context) : ICountryService
 {
     private const int MaxPageSize = 100;
-
-    private readonly CountriesDbContext _context;
-
-    public CountryService(CountriesDbContext context)
-    {
-        _context = context;
-    }
 
     public async Task<PagedResult<Country>> SearchAsync(
         string? name,
@@ -21,7 +14,7 @@ public class CountryService : ICountryService
         page = Math.Max(page, 1);
         pageSize = Math.Clamp(pageSize, 1, MaxPageSize);
 
-        var query = _context.Countries.AsQueryable();
+        var query = context.Countries.AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(name))
             query = query.Where(c => EF.Functions.Like(c.Name, $"%{name}%"));
@@ -43,6 +36,6 @@ public class CountryService : ICountryService
     public Task<Country?> GetByCodeAsync(string alpha3Code)
     {
         var code = alpha3Code.ToUpperInvariant();
-        return _context.Countries.FirstOrDefaultAsync(c => c.Alpha3Code == code);
+        return context.Countries.AsNoTracking().FirstOrDefaultAsync(c => c.Alpha3Code == code);
     }
 }
