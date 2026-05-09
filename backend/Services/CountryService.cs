@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 
 public class CountryService : ICountryService
 {
+    private const int MaxPageSize = 100;
+
     private readonly CountriesDbContext _context;
 
     public CountryService(CountriesDbContext context)
@@ -17,7 +19,7 @@ public class CountryService : ICountryService
     )
     {
         page = Math.Max(page, 1);
-        pageSize = Math.Clamp(pageSize, 1, 100);
+        pageSize = Math.Clamp(pageSize, 1, MaxPageSize);
 
         var query = _context.Countries.AsQueryable();
 
