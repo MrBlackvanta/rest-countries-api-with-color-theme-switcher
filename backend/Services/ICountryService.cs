@@ -1,4 +1,5 @@
 public interface ICountryService
 {
-    PagedResult<Country> Search(string? name, string? region, int page, int pageSize);
+    Task<PagedResult<Country>> SearchAsync(string? name, string? region, int page, int pageSize);
+    Task<Country?> GetByCodeAsync(string alpha3Code);
 }

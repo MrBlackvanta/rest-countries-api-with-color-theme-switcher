@@ -4,10 +4,11 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<ICountryService, CountryService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddDbContext<CountriesDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -22,8 +23,28 @@ app.UseHttpsRedirection();
 
 app.MapGet(
     "/countries",
-    (ICountryService countries, string? name, string? region, int page = 1, int pageSize = 20) =>
-        countries.Search(name, region, page, pageSize)
+    async (
+        ICountryService countries,
+        string? name,
+        string? region,
+        int page = 1,
+        int pageSize = 20
+    ) => await countries.SearchAsync(name, region, page, pageSize)
+);
+
+app.MapGet(
+    "/countries/{code}",
+    async (string code, ICountryService countries) =>
+    {
+        var country = await countries.GetByCodeAsync(code);
+        return country is null
+            ? Results.Problem(
+                statusCode: 404,
+                title: "Country not found",
+                detail: $"No country with alpha-3 code '{code}'."
+            )
+            : Results.Ok(country);
+    }
 );
 
 using (var scope = app.Services.CreateScope())

@@ -1,37 +1,46 @@
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 public class CountryService : ICountryService
 {
-    private readonly List<Country> _countries;
+    private readonly CountriesDbContext _context;
 
-    public CountryService()
+    public CountryService(CountriesDbContext context)
     {
-        var dataPath = Path.Combine(AppContext.BaseDirectory, "Data", "countries.json");
-        var json = File.ReadAllText(dataPath);
-        _countries =
-            JsonSerializer.Deserialize<List<Country>>(
-                json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-            ) ?? [];
+        _context = context;
     }
 
-    public PagedResult<Country> Search(string? name, string? region, int page, int pageSize)
+    public async Task<PagedResult<Country>> SearchAsync(
+        string? name,
+        string? region,
+        int page,
+        int pageSize
+    )
     {
         page = Math.Max(page, 1);
         pageSize = Math.Clamp(pageSize, 1, 100);
 
-        IEnumerable<Country> query = _countries;
+        var query = _context.Countries.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(name))
-            query = query.Where(c => c.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(c => EF.Functions.Like(c.Name, $"%{name}%"));
 
         if (!string.IsNullOrWhiteSpace(region))
-            query = query.Where(c => c.Region.Equals(region, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(c => EF.Functions.Like(c.Region, region));
 
-        var matched = query.OrderBy(c => c.Name).ToList();
+        var total = await query.CountAsync();
 
-        var items = matched.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        var items = await query
+            .OrderBy(c => c.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
-        return new PagedResult<Country>(items, page, pageSize, matched.Count);
+        return new PagedResult<Country>(items, page, pageSize, total);
+    }
+
+    public Task<Country?> GetByCodeAsync(string alpha3Code)
+    {
+        var code = alpha3Code.ToUpperInvariant();
+        return _context.Countries.FirstOrDefaultAsync(c => c.Alpha3Code == code);
     }
 }
