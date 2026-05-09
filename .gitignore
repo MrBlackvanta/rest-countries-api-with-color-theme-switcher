@@ -47,4 +47,17 @@ frontend-mentor-files/
 bin/
 obj/
 *.user
+*.suo
 .vs/
+
+# .NET — secrets and certs (NEVER commit these)
+*.pfx
+appsettings.local.json
+appsettings.*.local.json
+
+# Editors
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
