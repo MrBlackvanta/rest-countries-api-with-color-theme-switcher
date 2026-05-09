@@ -1,7 +1,7 @@
-export default function Footer() {
+export function Footer() {
   return (
     <footer>
-      <div className="z-1 mt-15 w-full px-9 pb-4 text-center text-xs text-white sm:text-sm lg:p-0">
+      <div className="z-1 mt-15 w-full px-9 pb-4 text-center text-xs sm:text-sm lg:p-0">
         Challenge by{" "}
         <a
           href="https://www.frontendmentor.io?ref=challenge"

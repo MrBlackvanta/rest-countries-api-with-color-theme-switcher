@@ -1,9 +1,9 @@
 "use client";
 
+import { CrescentSvg } from "@/components/icons/crescent-svg";
 import { useTheme } from "next-themes";
-import { CrescentSvg } from "@/components/icons";
 
-export default function ThemeToggle() {
+export function ThemeToggle() {
   const { setTheme } = useTheme();
 
   const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {

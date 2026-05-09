@@ -1,5 +1,6 @@
-import { Footer, Header } from "@/components/layout";
-import { Providers } from "@/providers";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { Providers } from "@/providers/providers";
 import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
