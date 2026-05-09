@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark, .dark *));
+
 @theme {
   --color-dark-blue: hsl(209, 23%, 22%);
   --color-very-dark-blue: hsl(207, 26%, 17%);
@@ -22,9 +24,22 @@
 }
 
 @utility focus-visible-ring {
-  @apply focus-visible:ring-accent-cyan focus-visible:ring-offset-accent-cyan focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
+  @apply focus-visible:ring-very-dark-blue-2 dark:focus-visible:ring-very-light-gray focus-visible:ring-offset-very-dark-blue-2 dark:focus-visible:ring-offset-very-light-gray focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
 }
 
 @utility footer-link {
-  @apply text-accent-blue rounded-xs font-bold;
+  @apply text-very-dark-blue dark:text-very-light-gray rounded-xs font-bold;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 9999;
 }

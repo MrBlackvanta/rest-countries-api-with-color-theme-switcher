@@ -1,4 +1,6 @@
 import { Footer } from "@/components/layout";
+import { ThemeToggle } from "@/components/ui";
+import { Providers } from "@/providers";
 import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
@@ -35,9 +37,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${nunitoSans.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${nunitoSans.variable} antialiased`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-dvh w-full flex-col">
-        {children}
+        <Providers>
+          <ThemeToggle />
+          {children}
+        </Providers>
         <Footer />
       </body>
     </html>
