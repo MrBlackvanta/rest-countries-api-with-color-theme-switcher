@@ -22,45 +22,17 @@ export default function ThemeToggle() {
 
   const isDark = resolvedTheme === "dark";
 
-  const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     const next = isDark ? "light" : "dark";
+    if (!("startViewTransition" in document)) return setTheme(next);
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    // Fallback for browsers without View Transitions API or reduced motion
-    if (!document.startViewTransition || prefersReducedMotion) {
-      setTheme(next);
-      return;
-    }
-
-    // Use click coordinates; fall back to button center for keyboard activation
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX || rect.left + rect.width / 2;
     const y = e.clientY || rect.top + rect.height / 2;
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y),
-    );
+    document.documentElement.style.setProperty("--theme-x", `${x}px`);
+    document.documentElement.style.setProperty("--theme-y", `${y}px`);
 
-    const transition = document.startViewTransition(() => setTheme(next));
-
-    await transition.ready;
-
-    document.documentElement.animate(
-      {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${endRadius}px at ${x}px ${y}px)`,
-        ],
-      },
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
-      },
-    );
+    document.startViewTransition(() => setTheme(next)).finished.catch(() => {});
   };
 
   return (
