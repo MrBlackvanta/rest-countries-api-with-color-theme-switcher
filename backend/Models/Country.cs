@@ -1,10 +1,15 @@
-public record Country(
-    string Name,
-    string? Capital,
-    string Region,
-    long Population,
-    string Alpha3Code,
-    Flags Flags
-);
+public record Country
+{
+    public string Alpha3Code { get; init; } = "";
+    public string Name { get; init; } = "";
+    public string? Capital { get; init; }
+    public string Region { get; init; } = "";
+    public long Population { get; init; }
+    public Flags Flags { get; init; } = new();
+}
 
-public record Flags(string Svg, string Png);
+public record Flags
+{
+    public string Svg { get; init; } = "";
+    public string Png { get; init; } = "";
+}
