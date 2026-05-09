@@ -3,6 +3,7 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+builder.Services.AddSingleton<ICountryService, CountryService>();
 
 var app = builder.Build();
 
@@ -15,15 +16,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var countries = new List<Country>
-{
-    new("Germany", "Berlin", "Europe", 83_240_525, "https://flagcdn.com/de.svg"),
-    new("Belgium", "Brussels", "Europe", 11_555_997, "https://flagcdn.com/be.svg"),
-    new("Brazil", "Brasília", "Americas", 212_559_417, "https://flagcdn.com/br.svg"),
-};
-
-app.MapGet("/countries", () => countries);
+app.MapGet("/countries", (ICountryService countries) => countries.GetAll());
 
 app.Run();
-
-record Country(string Name, string Capital, string Region, int Population, string FlagUrl);
