@@ -38,7 +38,7 @@ Then `http://localhost:8080/countries`.
 
 ### `GET /countries`
 
-Paginated, optionally filtered country list.
+Paginated, optionally filtered country list. Each item is a lightweight **summary** — just the fields the card grid needs. Detail-only fields (native name, currencies, languages, TLD, borders) are served by `GET /countries/{code}`.
 
 | Query param | Type | Default | Notes |
 |---|---|---|---|
@@ -75,7 +75,29 @@ Paginated, optionally filtered country list.
 
 Fetch a single country by ISO alpha-3 code. Case-insensitive (`DEU`, `deu`, `Deu` all match).
 
-Returns `200 OK` with the country object on hit, or `404 Not Found` with ProblemDetails JSON:
+Returns `200 OK` with the full country detail on hit. `borders` is resolved server-side from alpha-3 codes to country names:
+
+```json
+{
+  "alpha3Code": "BEL",
+  "name": "Belgium",
+  "nativeName": "België",
+  "capital": "Brussels",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "population": 11319511,
+  "flags": {
+    "svg": "https://flagcdn.com/be.svg",
+    "png": "https://flagcdn.com/w320/be.png"
+  },
+  "topLevelDomain": [".be"],
+  "currencies": ["Euro"],
+  "languages": ["Dutch", "French", "German"],
+  "borders": ["France", "Germany", "Netherlands"]
+}
+```
+
+On a miss, `404 Not Found` with ProblemDetails JSON:
 
 ```json
 {
@@ -97,10 +119,13 @@ backend/
 ├── Data/
 │   ├── countries.json          # Seed data, 250 countries (~400 KB)
 │   ├── CountriesDbContext.cs   # EF Core DbContext + entity config
+│   ├── CountrySeed.cs          # JSON-shaped seed record → Country mapping
 │   └── DbInitializer.cs        # Idempotent migration + seeding at startup
 ├── Migrations/                 # EF Core schema history (committed)
 ├── Models/
-│   ├── Country.cs              # Country + Flags records (init-only)
+│   ├── Country.cs              # Country + Flags entity records (init-only)
+│   ├── CountrySummary.cs       # Lightweight shape for the list endpoint
+│   ├── CountryDetail.cs        # Full shape for the detail endpoint
 │   └── PagedResult.cs          # Generic paginated wrapper
 ├── Services/
 │   ├── ICountryService.cs      # Read-only contract
@@ -178,11 +203,18 @@ The included Dockerfile builds and runs on any container platform. Verified on R
 
 **`AsNoTracking()` everywhere.** All queries are read-only, so EF Core's change tracking is pure overhead. Disabling it cuts query time roughly 30%.
 
+**Separate summary and detail shapes.** The list endpoint projects to `CountrySummary` (six fields), the detail endpoint returns `CountryDetail` (the full set). One `Country` entity persists everything; the API never ships detail-only fields — currencies, languages, TLD, borders — on a 20-item list response. The EF `.Select()` projection also narrows the generated SQL to only the summary columns.
+
+**Primitive collections for list-valued fields.** `TopLevelDomain`, `Currencies`, `Languages`, and `BorderCodes` map to single JSON-text columns via EF Core 9's primitive-collection convention — no join tables. The dataset is read-only and always read whole-row, so a relational split would add joins for zero benefit. Consistent with the `OwnsOne(Flags)` decision.
+
+**Seed DTO decoupled from the entity.** `countries.json` stores currencies and languages as objects (`{code, name, symbol}`); the entity stores name strings. `CountrySeed` mirrors the file's shape, and `ToEntity()` flattens objects to names during seeding. The on-disk format and the storage model are free to diverge without a brittle custom `JsonConverter`.
+
+**Borders resolved server-side.** Stored as alpha-3 codes (the dataset's native form), resolved to country names in `GetByCodeAsync` with one extra `WHERE Alpha3Code IN (...)` query. The frontend gets display-ready data instead of re-deriving names from a code-to-name map it would otherwise have to build and maintain.
+
 ## What's not here (and why)
 
 - **Authentication.** The data is public — no auth required.
 - **Rate limiting.** Render's free tier instance and the OutputCache layer absorb most repeat traffic. Add `AddRateLimiter` if exposed to untrusted scale.
 - **Structured logging stack** (Serilog, OpenTelemetry). Default `ILogger` is sufficient for a single-service deployment.
-- **Detail-page extras** (native name, currencies, languages, borders, TLD). The seed JSON has the data; extend the `Country` record + add a migration when the frontend needs them.
 - **Tests.** None yet. The service is small enough that integration tests against an in-memory SQLite would be the right starting point — `WebApplicationFactory<Program>` + `dotnet test`.
 - **Strongly-typed `CorsOptions`.** Worth doing once a third config section appears.

@@ -1,4 +1,4 @@
-public record Country
+public record CountryDetail
 {
     public string Alpha3Code { get; init; } = "";
     public string Name { get; init; } = "";
@@ -11,11 +11,5 @@ public record Country
     public List<string> TopLevelDomain { get; init; } = [];
     public List<string> Currencies { get; init; } = [];
     public List<string> Languages { get; init; } = [];
-    public List<string> BorderCodes { get; init; } = [];
-}
-
-public record Flags
-{
-    public string Svg { get; init; } = "";
-    public string Png { get; init; } = "";
+    public List<string> Borders { get; init; } = [];
 }

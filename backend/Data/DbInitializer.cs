@@ -12,13 +12,13 @@ public static class DbInitializer
 
         var dataPath = Path.Combine(env.ContentRootPath, "Data", "countries.json");
         var json = await File.ReadAllTextAsync(dataPath);
-        var countries =
-            JsonSerializer.Deserialize<List<Country>>(
+        var seed =
+            JsonSerializer.Deserialize<List<CountrySeed>>(
                 json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
             ) ?? [];
 
-        context.Countries.AddRange(countries);
+        context.Countries.AddRange(seed.Select(s => s.ToEntity()));
         await context.SaveChangesAsync();
     }
 }

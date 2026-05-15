@@ -66,7 +66,7 @@ app.MapGet(
             + "and/or by exact region. `page` defaults to 1, `pageSize` defaults to 20 (max 100)."
     )
     .WithTags("Countries")
-    .Produces<PagedResult<Country>>(StatusCodes.Status200OK);
+    .Produces<PagedResult<CountrySummary>>(StatusCodes.Status200OK);
 
 app.MapGet(
         "/countries/{code}",
@@ -89,7 +89,7 @@ app.MapGet(
         "Looks up by the 3-letter country code (case-insensitive). Returns 404 ProblemDetails if no match."
     )
     .WithTags("Countries")
-    .Produces<Country>(StatusCodes.Status200OK)
+    .Produces<CountryDetail>(StatusCodes.Status200OK)
     .ProducesProblem(StatusCodes.Status404NotFound);
 
 using (var scope = app.Services.CreateScope())
