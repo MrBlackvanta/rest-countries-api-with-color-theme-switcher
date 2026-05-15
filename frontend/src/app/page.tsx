@@ -1,4 +1,5 @@
 import { CountryFilters } from "@/components/country-filters";
+import { CountryGrid } from "@/components/country-grid";
 import { getCountries } from "@/lib/api/countries";
 import { Suspense } from "react";
 
@@ -14,11 +15,16 @@ export default async function Home({ searchParams }: HomeProps) {
   const countries = await getCountries({ name, region });
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4">
+    <main className="mx-auto w-full max-w-7xl px-4 pb-20">
       <Suspense>
         <CountryFilters />
       </Suspense>
-      <pre>{JSON.stringify(countries, null, 2)}</pre>
+      <CountryGrid
+        key={`${name ?? ""}|${region ?? ""}`}
+        initial={countries}
+        name={name}
+        region={region}
+      />
     </main>
   );
 }
