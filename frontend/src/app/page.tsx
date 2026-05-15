@@ -1,4 +1,6 @@
+import { CountryFilters } from "@/components/country-filters";
 import { getCountries } from "@/lib/api/countries";
+import { Suspense } from "react";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -13,7 +15,9 @@ export default async function Home({ searchParams }: HomeProps) {
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4">
-      {/* <SearchInput value={search} onChange={handleSearch} /> */}
+      <Suspense>
+        <CountryFilters />
+      </Suspense>
       <pre>{JSON.stringify(countries, null, 2)}</pre>
     </main>
   );
