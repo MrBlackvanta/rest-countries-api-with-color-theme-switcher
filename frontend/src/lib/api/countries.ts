@@ -1,4 +1,4 @@
-import { Country, PagedResult } from "@/types/country";
+import { Country, CountryDetail, PagedResult } from "@/types/country";
 
 export async function getCountries(params: {
   name?: string;
@@ -16,9 +16,12 @@ export async function getCountries(params: {
   return res.json() as Promise<PagedResult<Country>>;
 }
 
-export async function getCountryByCode(code: string) {
-  const url = new URL(`/countries/${code}`, process.env.API_URL);
+export async function getCountryByCode(
+  code: string,
+): Promise<CountryDetail | null> {
+  const url = new URL(`/countries/${encodeURIComponent(code)}`, process.env.API_URL);
   const res = await fetch(url, { next: { revalidate: 60 } });
+  if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Country request failed: ${res.status}`);
-  return res.json() as Promise<Country>;
+  return res.json() as Promise<CountryDetail>;
 }

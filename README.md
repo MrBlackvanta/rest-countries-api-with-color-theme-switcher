@@ -21,7 +21,7 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 ### Links
 
 - Solution URL: [GitHub](https://github.com/MrBlackvanta/rest-countries-api-with-color-theme-switcher)
-- Live Site URL: [Netlify](https://vanta-rest-countries-api-with-color-theme-switcher.netlify.app)
+- Live Site URL: [Netlify](https://vanta-rest-countries-api-with-theme.netlify.app)
 
 ## My process
 
@@ -41,7 +41,7 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 
 **Tailwind silently drops typo'd variants.** I had `mx:px-0` and `mb:mb-2` in two files, where I meant `md:`. Both classes did nothing — Tailwind doesn't error on unknown variant prefixes, it just emits no rule. The class string looked correct in the source but never matched at runtime. When a responsive tweak doesn't apply, check the compiled CSS, not the JSX.
 
-**`<blockquote>` wraps the quote, attribution goes inside.** First pass I had the quote text in a `<p>`, sibling to a `<blockquote>` that contained the avatar and the author. That's backwards. The HTML spec says `<blockquote>` *is* the quote — the quoted content lives inside it. Attribution belongs inside, in a `<footer>`. And `<cite>` is for the title of a work ("The Two Towers"), not a person's name — for the author, a `<span>` is the safer choice.
+**`<blockquote>` wraps the quote, attribution goes inside.** First pass I had the quote text in a `<p>`, sibling to a `<blockquote>` that contained the avatar and the author. That's backwards. The HTML spec says `<blockquote>` _is_ the quote — the quoted content lives inside it. Attribution belongs inside, in a `<footer>`. And `<cite>` is for the title of a work ("The Two Towers"), not a person's name — for the author, a `<span>` is the safer choice.
 
 **An `<a>` without `href` is not a link.** Wrapped every footer info row in `<a href={item.href}>`. The address row has no `href` in the data, so it rendered as `<a>` with a missing `href` attribute — invalid HTML, not focusable, not announced as a link. Fix is conditional rendering: only emit the `<a>` when `href` exists; otherwise render the row as a plain wrapper. Optional fields in the data need optional structure in the JSX.
 

@@ -7,6 +7,26 @@ export interface Country {
   flags: Flags;
 }
 
+export interface BorderCountry {
+  code: string;
+  name: string;
+}
+
+export interface CountryDetail {
+  alpha3Code: string;
+  name: string;
+  nativeName: string;
+  capital: string | null;
+  region: string;
+  subregion: string | null;
+  population: number;
+  flags: Flags;
+  topLevelDomain: string[];
+  currencies: string[];
+  languages: string[];
+  borders: BorderCountry[];
+}
+
 export interface Flags {
   svg: string;
   png: string;
