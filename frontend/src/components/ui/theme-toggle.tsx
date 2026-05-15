@@ -23,14 +23,15 @@ export function ThemeToggle() {
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       className="flex cursor-pointer items-center gap-2 text-xs font-semibold sm:text-base"
     >
       <CrescentSvg />
-      <p>
+      <span>
         <span className="dark:hidden">Dark</span>
         <span className="hidden dark:inline">Light</span> Mode
-      </p>
+      </span>
     </button>
   );
 }
