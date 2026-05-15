@@ -1,8 +1,7 @@
+import { numberFormatter } from "@/lib/format";
 import { Country } from "@/types/country";
 import Image from "next/image";
 import Link from "next/link";
-
-const populationFormatter = new Intl.NumberFormat("en-US");
 
 interface CountryCardProps {
   country: Country;
@@ -11,7 +10,7 @@ interface CountryCardProps {
 
 export function CountryCard({ country, priority = false }: CountryCardProps) {
   return (
-    <article className="dark:bg-dark-blue shadow-card relative overflow-hidden rounded-md bg-white transition-all hover:scale-105 hover:shadow-lg">
+    <article className="dark:bg-dark-blue shadow-card relative overflow-hidden rounded-md bg-white transition hover:scale-105 hover:shadow-lg">
       <div className="relative aspect-8/5">
         <Image
           src={country.flags.png}
@@ -37,7 +36,7 @@ export function CountryCard({ country, priority = false }: CountryCardProps) {
           <div className="flex gap-x-1">
             <dt className="font-semibold">Population:</dt>
             <dd className="font-light">
-              {populationFormatter.format(country.population)}
+              {numberFormatter.format(country.population)}
             </dd>
           </div>
           <div className="flex gap-x-1">

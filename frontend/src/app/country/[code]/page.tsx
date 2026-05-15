@@ -1,5 +1,6 @@
 import { BackButton } from "@/components/back-button";
 import { getCountryByCode } from "@/lib/api/countries";
+import { numberFormatter } from "@/lib/format";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +9,6 @@ import { notFound } from "next/navigation";
 interface CountryPageProps {
   params: Promise<{ code: string }>;
 }
-
-const numberFormatter = new Intl.NumberFormat("en-US");
 
 export async function generateMetadata({
   params,

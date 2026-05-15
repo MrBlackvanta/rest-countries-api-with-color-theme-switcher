@@ -71,7 +71,7 @@ export function CountryGrid({ initial, name, region }: CountryGridProps) {
       <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-16 lg:grid-cols-3 xl:grid-cols-4">
         {items.map((country, index) => (
           <li key={country.alpha3Code}>
-            <CountryCard country={country} priority={index < 4} />
+            <CountryCard country={country} priority={index === 0} />
           </li>
         ))}
       </ul>

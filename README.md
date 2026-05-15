@@ -31,7 +31,6 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 - [React 19](https://react.dev/)
 - TypeScript
 - [Tailwind CSS v4](https://tailwindcss.com/)
-- [React Hook Form](https://react-hook-form.com/)
 
 ### What I learned
 
