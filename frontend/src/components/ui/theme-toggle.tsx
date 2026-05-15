@@ -24,7 +24,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center gap-2 text-xs font-semibold sm:text-base"
+      className="flex cursor-pointer items-center gap-2 text-xs font-semibold sm:text-base"
     >
       <CrescentSvg />
       <p>
