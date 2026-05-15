@@ -40,11 +40,11 @@
 }
 
 @utility shadow-header {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.0562443);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 @utility shadow-input {
-  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.0532439);
+  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.05);
 }
 
 @utility shadow-card {
