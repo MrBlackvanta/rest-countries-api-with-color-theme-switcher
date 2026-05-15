@@ -88,7 +88,7 @@ export function CountryGrid({ initial, name, region }: CountryGridProps) {
               <button
                 type="button"
                 onClick={loadMore}
-                className="bg-white dark:bg-dark-blue shadow-input rounded-md px-6 py-2 text-sm font-semibold"
+                className="dark:bg-dark-blue shadow-input rounded-md bg-white px-6 py-2 text-sm font-semibold"
               >
                 Try again
               </button>

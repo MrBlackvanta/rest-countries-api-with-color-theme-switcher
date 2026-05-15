@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "scope-svg": "node scripts/scope-svg-ids.mjs src/components/icons/*.tsx",
-    "import-svgs": "node scripts/import-svgs.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
     "next": "16.2.4",
