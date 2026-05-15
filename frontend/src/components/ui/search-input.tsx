@@ -7,7 +7,7 @@ interface SearchInputProps {
 
 export function SearchInput({ value, onChange }: SearchInputProps) {
   return (
-    <label className="dark:bg-dark-blue shadow-input relative block h-12 cursor-pointer rounded-md bg-white ps-18.5 text-xs leading-5 sm:text-sm">
+    <label className="dark:bg-dark-blue shadow-input relative block h-12 cursor-pointer rounded-md bg-white ps-18.5 text-xs leading-5 sm:h-14 sm:text-sm">
       <SearchSvg className="absolute inset-s-8 top-1/2 -translate-y-1/2" />
       <input
         type="text"

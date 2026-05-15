@@ -24,9 +24,9 @@ export function CountryFilters() {
     router.replace(`${pathname}?${params}`, { scroll: false });
   }, [debouncedSearch, pathname, router, searchParams]);
 
-  const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRegionChange = (region: string) => {
     const params = new URLSearchParams(searchParams);
-    if (e.target.value) params.set("region", e.target.value);
+    if (region) params.set("region", region);
     else params.delete("region");
 
     router.replace(`${pathname}?${params}`, { scroll: false });
