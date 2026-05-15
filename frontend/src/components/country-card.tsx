@@ -10,7 +10,7 @@ interface CountryCardProps {
 
 export function CountryCard({ country, priority = false }: CountryCardProps) {
   return (
-    <article className="bg-white dark:bg-dark-blue shadow-card overflow-hidden rounded-md">
+    <article className="dark:bg-dark-blue shadow-card cursor-pointer overflow-hidden rounded-md bg-white transition-all hover:scale-105 hover:shadow-lg">
       <div className="relative aspect-8/5">
         <Image
           src={country.flags.png}
