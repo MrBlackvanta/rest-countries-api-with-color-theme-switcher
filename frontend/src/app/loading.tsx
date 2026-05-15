@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <main className="mx-auto flex min-h-[40vh] w-full max-w-7xl items-center justify-center px-4">
+    <main className="mx-auto flex w-full max-w-7xl grow items-center justify-center px-4">
       <div role="status" className="flex flex-col items-center gap-4">
         <span
           aria-hidden="true"

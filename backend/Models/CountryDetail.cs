@@ -11,5 +11,5 @@ public record CountryDetail
     public List<string> TopLevelDomain { get; init; } = [];
     public List<string> Currencies { get; init; } = [];
     public List<string> Languages { get; init; } = [];
-    public List<string> Borders { get; init; } = [];
+    public List<BorderCountry> Borders { get; init; } = [];
 }

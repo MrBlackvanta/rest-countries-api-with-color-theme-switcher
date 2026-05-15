@@ -15,7 +15,7 @@ export default async function Home({ searchParams }: HomeProps) {
   const countries = await getCountries({ name, region });
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 pb-20">
+    <main className="mx-auto w-full max-w-7xl grow px-4 pb-20">
       <Suspense>
         <CountryFilters />
       </Suspense>

@@ -59,19 +59,22 @@ export default async function CountryPage({ params }: CountryPageProps) {
   ];
 
   const secondaryFacts = [
-    { label: "Top Level Domain", value: orDash(country.topLevelDomain.join(", ")) },
+    {
+      label: "Top Level Domain",
+      value: orDash(country.topLevelDomain.join(", ")),
+    },
     { label: "Currencies", value: orDash(country.currencies.join(", ")) },
     { label: "Languages", value: orDash(country.languages.join(", ")) },
   ];
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 pb-20">
+    <main className="mx-auto w-full max-w-7xl grow px-4 pb-20">
       <BackButton />
 
       <div className="mt-14 grid gap-10 sm:mt-20 lg:grid-cols-2 lg:items-center lg:gap-28">
-        <div className="relative aspect-7/5 w-full overflow-hidden">
+        <div className="relative aspect-7/5 w-full overflow-hidden rounded-lg">
           <Image
-            src={country.flags.png}
+            src={country.flags.svg}
             alt={`Flag of ${country.name}`}
             fill
             priority
@@ -91,7 +94,7 @@ export default async function CountryPage({ params }: CountryPageProps) {
           </div>
 
           {country.borders.length > 0 && (
-            <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-x-3.5">
+            <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-x-3.5">
               <h3 className="shrink-0 text-base font-semibold sm:text-lg">
                 Border Countries:
               </h3>

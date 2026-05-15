@@ -52,14 +52,14 @@ public class CountryService(CountriesDbContext context) : ICountryService
         if (country is null)
             return null;
 
-        var borderNames =
+        var borders =
             country.BorderCodes.Count == 0
                 ? []
                 : await context
                     .Countries.AsNoTracking()
                     .Where(c => country.BorderCodes.Contains(c.Alpha3Code))
                     .OrderBy(c => c.Name)
-                    .Select(c => c.Name)
+                    .Select(c => new BorderCountry { Code = c.Alpha3Code, Name = c.Name })
                     .ToListAsync();
 
         return new CountryDetail
@@ -75,7 +75,7 @@ public class CountryService(CountriesDbContext context) : ICountryService
             TopLevelDomain = country.TopLevelDomain,
             Currencies = country.Currencies,
             Languages = country.Languages,
-            Borders = borderNames,
+            Borders = borders,
         };
     }
 }
