@@ -32,6 +32,11 @@ export interface Flags {
   png: string;
 }
 
+export interface Filters {
+  name: string;
+  region: string;
+}
+
 export interface PagedResult<T> {
   items: T[];
   page: number;

@@ -3,34 +3,29 @@
 import { SearchInput } from "@/components/ui/search-input";
 import { Select } from "@/components/ui/select";
 import { useDebounce } from "@/hooks/useDebounce";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import type { Filters } from "@/types/country";
 import { useEffect, useState } from "react";
 
-export function CountryFilters() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+interface CountryFiltersProps {
+  filters: Filters;
+  isPending: boolean;
+  isRegionPending: boolean;
+  onChange: (patch: Partial<Filters>) => void;
+}
 
-  const [search, setSearch] = useState(searchParams.get("name") ?? "");
+export function CountryFilters({
+  filters,
+  isPending,
+  isRegionPending,
+  onChange,
+}: CountryFiltersProps) {
+  const [search, setSearch] = useState(filters.name);
   const debouncedSearch = useDebounce(search);
 
   useEffect(() => {
-    if ((searchParams.get("name") ?? "") === debouncedSearch) return;
-
-    const params = new URLSearchParams(searchParams);
-    if (debouncedSearch) params.set("name", debouncedSearch);
-    else params.delete("name");
-
-    router.replace(`${pathname}?${params}`, { scroll: false });
-  }, [debouncedSearch, pathname, router, searchParams]);
-
-  const handleRegionChange = (region: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (region) params.set("region", region);
-    else params.delete("region");
-
-    router.replace(`${pathname}?${params}`, { scroll: false });
-  };
+    if (filters.name === debouncedSearch) return;
+    onChange({ name: debouncedSearch });
+  }, [debouncedSearch, filters.name, onChange]);
 
   return (
     <div className="mb-8 flex flex-col gap-10 sm:mb-12 sm:flex-row sm:items-center sm:justify-between">
@@ -42,9 +37,14 @@ export function CountryFilters() {
       </div>
 
       <Select
-        value={searchParams.get("region") ?? ""}
-        onChange={handleRegionChange}
+        value={filters.region}
+        isPending={isRegionPending}
+        onChange={(region) => onChange({ region })}
       />
+
+      <p role="status" className="sr-only">
+        {isPending ? "Loading countries…" : ""}
+      </p>
     </div>
   );
 }

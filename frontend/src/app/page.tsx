@@ -1,7 +1,5 @@
-import { CountryFilters } from "@/components/country-filters";
-import { CountryGrid } from "@/components/country-grid";
+import { CountryBrowser } from "@/components/country-browser";
 import { getCountries } from "@/lib/api/countries";
-import { Suspense } from "react";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -11,20 +9,12 @@ interface HomeProps {
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { name, region } = await searchParams;
+  const { name = "", region = "" } = await searchParams;
   const countries = await getCountries({ name, region });
 
   return (
     <main className="mx-auto w-full max-w-7xl grow px-4 pb-20">
-      <Suspense>
-        <CountryFilters />
-      </Suspense>
-      <CountryGrid
-        key={`${name ?? ""}|${region ?? ""}`}
-        initial={countries}
-        name={name}
-        region={region}
-      />
+      <CountryBrowser countries={countries} applied={{ name, region }} />
     </main>
   );
 }

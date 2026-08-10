@@ -2,16 +2,18 @@
 
 import { ChevronSvg } from "@/components/icons/chevron-svg";
 import { CloseSvg } from "@/components/icons/close-svg";
+import { Spinner } from "@/components/ui/spinner";
 import { useEffect, useId, useRef, useState } from "react";
 
 const REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
 
 interface SelectProps {
   value: string;
+  isPending: boolean;
   onChange: (region: string) => void;
 }
 
-export function Select({ value, onChange }: SelectProps) {
+export function Select({ value, isPending, onChange }: SelectProps) {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -91,18 +93,22 @@ export function Select({ value, onChange }: SelectProps) {
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-controls={listboxId}
-          aria-label="Filter by Region"
+          aria-label={value ? `Filter by Region: ${value}` : "Filter by Region"}
           onClick={() => (open ? setOpen(false) : openMenu())}
           className={`flex h-full grow cursor-pointer items-center justify-between gap-2 rounded-md ps-6 text-start ${
             value ? "pe-2" : "pe-6"
           }`}
         >
           <span>{value || "Filter by Region"}</span>
-          {!value && (
-            <ChevronSvg
-              aria-hidden
-              className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
-            />
+          {isPending ? (
+            <Spinner className="size-4 shrink-0 border-2" />
+          ) : (
+            !value && (
+              <ChevronSvg
+                aria-hidden
+                className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+              />
+            )
           )}
         </button>
 

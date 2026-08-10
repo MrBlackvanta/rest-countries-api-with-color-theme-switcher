@@ -1,17 +1,18 @@
 "use client";
 
 import { CountryCard } from "@/components/country-card";
+import { Spinner } from "@/components/ui/spinner";
 import { loadMoreCountries } from "@/lib/actions/countries";
-import type { Country, PagedResult } from "@/types/country";
+import type { Country, Filters, PagedResult } from "@/types/country";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 interface CountryGridProps {
   initial: PagedResult<Country>;
-  name?: string;
-  region?: string;
+  filters: Filters;
+  isStale: boolean;
 }
 
-export function CountryGrid({ initial, name, region }: CountryGridProps) {
+export function CountryGrid({ initial, filters, isStale }: CountryGridProps) {
   const [items, setItems] = useState(initial.items);
   const [page, setPage] = useState(initial.page);
   const [totalPages, setTotalPages] = useState(initial.totalPages);
@@ -30,7 +31,7 @@ export function CountryGrid({ initial, name, region }: CountryGridProps) {
 
     startTransition(async () => {
       try {
-        const next = await loadMoreCountries({ name, region, page: page + 1 });
+        const next = await loadMoreCountries({ ...filters, page: page + 1 });
         setItems((prev) => [...prev, ...next.items]);
         setPage(next.page);
         setTotalPages(next.totalPages);
@@ -40,7 +41,7 @@ export function CountryGrid({ initial, name, region }: CountryGridProps) {
         loadingRef.current = false;
       }
     });
-  }, [name, region, page, totalPages]);
+  }, [filters, page, totalPages]);
 
   useEffect(() => {
     if (!hasMore || failed) return;
@@ -58,60 +59,62 @@ export function CountryGrid({ initial, name, region }: CountryGridProps) {
     return () => observer.disconnect();
   }, [hasMore, failed, loadMore]);
 
-  if (initial.total === 0) {
-    return (
-      <p className="text-dark-gray py-20 text-center text-sm font-semibold">
-        No countries found
-      </p>
-    );
-  }
-
   return (
-    <>
-      <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-16 lg:grid-cols-3 xl:grid-cols-4">
-        {items.map((country, index) => (
-          <li key={country.alpha3Code}>
-            <CountryCard country={country} priority={index === 0} />
-          </li>
-        ))}
-      </ul>
+    <div
+      aria-busy={isStale}
+      className={`transition-opacity duration-200 motion-reduce:transition-none ${
+        isStale ? "opacity-40" : ""
+      }`}
+    >
+      {initial.total === 0 ? (
+        <p className="text-dark-gray py-20 text-center text-sm font-semibold">
+          No countries found
+        </p>
+      ) : (
+        <>
+          <ul className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-16 lg:grid-cols-3 xl:grid-cols-4">
+            {items.map((country, index) => (
+              <li key={country.alpha3Code}>
+                <CountryCard country={country} priority={index === 0} />
+              </li>
+            ))}
+          </ul>
 
-      {hasMore && (
-        <div className="py-12">
-          <div ref={sentinelRef} aria-hidden="true" />
+          {hasMore && (
+            <div className="py-12">
+              <div ref={sentinelRef} aria-hidden="true" />
 
-          {failed ? (
-            <div className="flex flex-col items-center gap-3">
-              <p className="text-dark-gray text-sm">
-                Couldn’t load more countries.
-              </p>
-              <button
-                type="button"
-                onClick={loadMore}
-                className="dark:bg-dark-blue shadow-input rounded-md bg-white px-6 py-2 text-sm font-semibold"
-              >
-                Try again
-              </button>
-            </div>
-          ) : (
-            <div
-              role="status"
-              aria-live="polite"
-              className="flex justify-center"
-            >
-              {isPending && (
-                <>
-                  <span
-                    aria-hidden="true"
-                    className="border-dark-gray size-8 animate-spin rounded-full border-4 border-t-transparent motion-reduce:animate-none"
-                  />
-                  <span className="sr-only">Loading more countries…</span>
-                </>
+              {failed ? (
+                <div className="flex flex-col items-center gap-3">
+                  <p className="text-dark-gray text-sm">
+                    Couldn’t load more countries.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={loadMore}
+                    className="dark:bg-dark-blue shadow-input rounded-md bg-white px-6 py-2 text-sm font-semibold"
+                  >
+                    Try again
+                  </button>
+                </div>
+              ) : (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  className="flex justify-center"
+                >
+                  {isPending && (
+                    <>
+                      <Spinner className="text-dark-gray size-8 border-4" />
+                      <span className="sr-only">Loading more countries…</span>
+                    </>
+                  )}
+                </div>
               )}
             </div>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
