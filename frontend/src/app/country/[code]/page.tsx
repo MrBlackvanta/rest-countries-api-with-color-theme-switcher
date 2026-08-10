@@ -21,8 +21,9 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${country.name} | Where in the world?`,
+    title: country.name,
     description: `Population, region, languages, currencies and bordering countries of ${country.name}.`,
+    alternates: { canonical: `/country/${country.alpha3Code}` },
   };
 }
 
@@ -77,6 +78,11 @@ export default async function CountryPage({ params }: CountryPageProps) {
             alt={`Flag of ${country.name}`}
             fill
             priority
+            fetchPriority="high"
+            // next/image refuses to optimize SVG unless dangerouslyAllowSVG is
+            // on, so it already serves the origin URL; saying so keeps the
+            // missing srcset from reading like a bug.
+            unoptimized
             sizes="(min-width: 1024px) 560px, 100vw"
             className="object-cover"
           />

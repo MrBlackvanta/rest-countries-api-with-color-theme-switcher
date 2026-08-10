@@ -1,6 +1,7 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Providers } from "@/providers/providers";
+import { siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
@@ -13,9 +14,20 @@ const nunitoSans = Nunito_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "REST Countries API with color theme switcher",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default:
+      "Where in the world? | REST Countries API with color theme switcher",
+    template: "%s | Where in the world?",
+  },
   description:
     "Frontend Mentor REST Countries API with color theme switcher challenge built with Next.js and TypeScript.",
+  openGraph: {
+    siteName: "Where in the world?",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image" },
   icons: {
     icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
     apple: [{ url: "/apple-icon.png" }],

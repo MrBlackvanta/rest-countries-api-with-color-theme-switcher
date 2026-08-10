@@ -20,12 +20,12 @@ export function CountryFilters({
   onChange,
 }: CountryFiltersProps) {
   const [search, setSearch] = useState(filters.name);
-  const debouncedSearch = useDebounce(search);
+  const query = useDebounce(search).trim();
 
   useEffect(() => {
-    if (filters.name === debouncedSearch) return;
-    onChange({ name: debouncedSearch });
-  }, [debouncedSearch, filters.name, onChange]);
+    if (filters.name === query) return;
+    onChange({ name: query });
+  }, [query, filters.name, onChange]);
 
   return (
     <div className="mb-8 flex flex-col gap-10 sm:mb-12 sm:flex-row sm:items-center sm:justify-between">

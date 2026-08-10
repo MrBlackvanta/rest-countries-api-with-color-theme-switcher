@@ -3,9 +3,8 @@
 import { ChevronSvg } from "@/components/icons/chevron-svg";
 import { CloseSvg } from "@/components/icons/close-svg";
 import { Spinner } from "@/components/ui/spinner";
+import { REGIONS } from "@/lib/regions";
 import { useEffect, useId, useRef, useState } from "react";
-
-const REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
 
 interface SelectProps {
   value: string;
