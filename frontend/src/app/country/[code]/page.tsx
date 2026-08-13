@@ -68,7 +68,7 @@ export default async function CountryPage({ params }: CountryPageProps) {
   ];
 
   return (
-    <main className="mx-auto w-full max-w-7xl grow px-4 pb-20">
+    <div className="pb-20">
       <BackButton />
 
       <div className="mt-14 grid gap-10 sm:mt-20 lg:grid-cols-2 lg:items-center lg:gap-28">
@@ -119,6 +119,6 @@ export default async function CountryPage({ params }: CountryPageProps) {
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

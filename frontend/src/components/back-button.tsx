@@ -3,11 +3,14 @@
 import { ArrowLeftSvg } from "@/components/icons/arrow-left-svg";
 import { useRouter } from "next/navigation";
 
+const historyLengthOnEntry =
+  typeof window === "undefined" ? 0 : window.history.length;
+
 export function BackButton() {
   const router = useRouter();
 
   function goBack() {
-    if (window.history.length > 1) {
+    if (window.history.length > historyLengthOnEntry) {
       router.back();
     } else {
       router.push("/");

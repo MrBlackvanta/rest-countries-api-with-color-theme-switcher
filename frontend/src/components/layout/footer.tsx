@@ -5,7 +5,7 @@ export function Footer() {
         Challenge by{" "}
         <a
           href="https://www.frontendmentor.io?ref=challenge"
-          className="footer-link"
+          className="v-footer-link"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -14,7 +14,7 @@ export function Footer() {
         . Coded by{" "}
         <a
           href="https://www.linkedin.com/in/abdelrhman-vanta/"
-          className="footer-link"
+          className="v-footer-link"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -6,7 +6,7 @@
   --color-dark-blue: hsl(209, 23%, 22%);
   --color-very-dark-blue: hsl(207, 26%, 17%);
   --color-very-dark-blue-2: hsl(200, 15%, 8%);
-  --color-dark-gray: hsl(0, 0%, 52%);
+  --color-dark-gray: hsl(0, 0%, 45%);
   --color-light-gray: hsl(0, 0%, 77%);
   --color-very-light-gray: hsl(0, 0%, 98%);
   --color-white: hsl(0, 0%, 100%);
@@ -21,21 +21,22 @@
   }
   html.dark {
     color-scheme: dark;
+    --color-dark-gray: hsl(0, 0%, 60%);
   }
   body {
     @apply bg-very-light-gray dark:bg-very-dark-blue;
   }
   button,
   a {
-    @apply focus-visible-ring;
+    @apply v-focus-visible-ring;
   }
 }
 
-@utility focus-visible-ring {
+@utility v-focus-visible-ring {
   @apply focus-visible:ring-very-dark-blue-2 focus-visible:ring-offset-very-dark-blue-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-white dark:focus-visible:ring-offset-white;
 }
 
-@utility footer-link {
+@utility v-footer-link {
   @apply text-very-dark-blue rounded-xs font-semibold dark:text-white;
 }
 

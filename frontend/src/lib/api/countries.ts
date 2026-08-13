@@ -2,13 +2,19 @@ import { Country, CountryDetail, PagedResult } from "@/types/country";
 
 const MAX_PAGE_SIZE = 100;
 
+function apiUrl(path: string) {
+  const base = process.env.API_URL;
+  if (!base) throw new Error("API_URL environment variable is not set");
+  return new URL(path, base);
+}
+
 export async function getCountries(params: {
   name?: string;
   region?: string;
   page?: number;
   pageSize?: number;
 }) {
-  const url = new URL("/countries", process.env.API_URL);
+  const url = apiUrl("/countries");
 
   if (params.name) url.searchParams.set("name", params.name);
   if (params.region) url.searchParams.set("region", params.region);
@@ -36,10 +42,7 @@ export async function getAllCountries() {
 export async function getCountryByCode(
   code: string,
 ): Promise<CountryDetail | null> {
-  const url = new URL(
-    `/countries/${encodeURIComponent(code)}`,
-    process.env.API_URL,
-  );
+  const url = apiUrl(`/countries/${encodeURIComponent(code)}`);
   const res = await fetch(url, { next: { revalidate: 60 } });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Country request failed: ${res.status}`);

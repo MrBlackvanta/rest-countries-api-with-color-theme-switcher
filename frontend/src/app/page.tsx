@@ -22,8 +22,8 @@ export default async function Home({ searchParams }: HomeProps) {
   const countries = await getCountries({ name, region });
 
   return (
-    <main className="mx-auto w-full max-w-7xl grow px-4 pb-20">
+    <div className="pb-20">
       <CountryBrowser countries={countries} applied={{ name, region }} />
-    </main>
+    </div>
   );
 }
