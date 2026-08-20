@@ -21,7 +21,9 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 ### Links
 
 - Solution URL: [GitHub](https://github.com/MrBlackvanta/rest-countries-api-with-color-theme-switcher)
-- Live Site URL: [Netlify](https://vanta-rest-countries-api-with-theme.netlify.app)
+- Live Site URL: [Cloudflare](https://rest-countries-api-with-color-theme-switcher.abdelrhman-ahmed8881.workers.dev)
+- Mirror: [Netlify](https://vanta-rest-countries-api-with-theme.netlify.app)
+- API: [Render](https://vanta-rest-countries-api.onrender.com/countries) ([health](https://vanta-rest-countries-api.onrender.com/health))
 
 ## My process
 
@@ -33,6 +35,7 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [next-themes](https://github.com/pacocoursey/next-themes)
 - A self-built .NET REST API serving paginated, filterable country data (in place of the suggested restcountries.com)
+- Deployed as a Cloudflare Worker through [OpenNext](https://opennext.js.org/cloudflare), with the .NET API in a container on Render
 
 ### What I learned
 

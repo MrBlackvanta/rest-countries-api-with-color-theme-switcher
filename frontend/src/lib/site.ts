@@ -1,3 +1,3 @@
 export const siteUrl =
   process.env.SITE_URL ??
-  "https://vanta-rest-countries-api-with-theme.netlify.app";
+  "https://rest-countries-api-with-color-theme-switcher.abdelrhman-ahmed8881.workers.dev";

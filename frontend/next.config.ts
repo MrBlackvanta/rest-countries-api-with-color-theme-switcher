@@ -7,8 +7,10 @@ const nextConfig: NextConfig = {
     staleTimes: { dynamic: 300 },
     dynamicOnHover: true,
   },
+  // Workers runs no Next image optimizer, so the flags are served straight from
+  // flagcdn. `priority` still emits its preload, which is what the LCP work relied on.
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "flagcdn.com" }],
+    unoptimized: true,
   },
 };
 

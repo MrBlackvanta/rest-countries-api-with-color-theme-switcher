@@ -17,6 +17,11 @@ coverage
 .next/
 out/
 
+# cloudflare workers
+.open-next/
+.wrangler/
+cloudflare-env.d.ts
+
 # production
 build
 
