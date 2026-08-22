@@ -1,7 +1,7 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Providers } from "@/providers/providers";
-import { siteUrl } from "@/lib/site";
+import { openGraphBase, siteName, siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
@@ -16,18 +16,16 @@ const nunitoSans = Nunito_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default:
-      "Where in the world? | REST Countries API with color theme switcher",
-    template: "%s | Where in the world?",
+    default: `${siteName} | Browse every country`,
+    template: `%s | ${siteName}`,
   },
   description:
-    "Frontend Mentor REST Countries API with color theme switcher challenge built with Next.js and TypeScript.",
-  openGraph: {
-    siteName: "Where in the world?",
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: { card: "summary_large_image" },
+    "Search every country by name, filter by region, and open a detail view for its capital, population and bordering countries.",
+  alternates: { canonical: "/" },
+  // No title or description here on purpose: letting both fall back per route is what
+  // makes /country/[code] share as the country's own name.
+  openGraph: { ...openGraphBase, url: "/" },
+  twitter: { card: "summary_large_image", images: openGraphBase.images },
   icons: {
     icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
     apple: [{ url: "/apple-icon.png" }],

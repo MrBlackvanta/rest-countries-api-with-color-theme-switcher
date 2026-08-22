@@ -1,6 +1,7 @@
 import { BackButton } from "@/components/back-button";
 import { getCountryByCode } from "@/lib/api/countries";
 import { numberFormatter } from "@/lib/format";
+import { openGraphBase } from "@/lib/site";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,10 +21,15 @@ export async function generateMetadata({
     return { title: "Country not found" };
   }
 
+  const path = `/country/${country.alpha3Code}`;
+
   return {
     title: country.name,
     description: `Population, region, languages, currencies and bordering countries of ${country.name}.`,
-    alternates: { canonical: `/country/${country.alpha3Code}` },
+    alternates: { canonical: path },
+    // Without this the root's og:url is inherited verbatim and every country shares as
+    // the home page. Declaring openGraph here replaces the parent's, hence the spread.
+    openGraph: { ...openGraphBase, url: path },
   };
 }
 
