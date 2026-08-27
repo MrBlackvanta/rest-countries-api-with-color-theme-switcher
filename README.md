@@ -16,13 +16,12 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 
 ### Screenshot
 
-![](./screenshot.png)
+![](./screenshot.webp)
 
 ### Links
 
 - Solution URL: [GitHub](https://github.com/MrBlackvanta/rest-countries-api-with-color-theme-switcher)
 - Live Site URL: [Cloudflare](https://rest-countries-api-with-color-theme-switcher.abdelrhman-ahmed8881.workers.dev)
-- Mirror: [Netlify](https://vanta-rest-countries-api-with-theme.netlify.app)
 - API: [Render](https://vanta-rest-countries-api.onrender.com/countries) ([health](https://vanta-rest-countries-api.onrender.com/health))
 
 ## My process
@@ -45,7 +44,7 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 
 **A filter change is a fetch, and React deliberately refuses to tell you it's happening.** Picking a region calls `router.replace`, which re-runs the Server Component. Next performs that inside a transition, and a transition's entire job is to keep the _old_ UI on screen rather than flash a fallback — so `loading.tsx` never appears and the page simply sits there for a beat with no dropdown label change, no spinner, nothing. The pending state has to be asked for: driving the navigation with `startTransition` from `useTransition` surfaces `isPending`, which dims the grid behind `aria-busy` and spins the dropdown. `useOptimistic` covers the other half — the label reads "Europe" on click instead of one round-trip later, because the optimistic value is held for exactly as long as the transition is pending, which is exactly as long as the real value would have lagged.
 
-**The client router cache keeps dynamic pages for zero seconds by default.** Both routes here are dynamically rendered, and since v15 the `dynamic` entry of the Client Router Cache defaults to `0` — nothing is reused, so re-picking a region or reopening a country you were just looking at pays the whole RSC round-trip again. `experimental.staleTimes: { dynamic: 300 }` gives those entries a five-minute life, and since the cache key includes the search string, `/?region=Europe` and `/?region=Africa` are separate entries rather than one entry that clobbers itself. This is the part people install TanStack Query for; the App Router already has it, it just ships switched off. `experimental.dynamicOnHover` then covers the _first_ click, prefetching a country's full dynamic payload on hover instead of only its loading boundary — paid for with one server render per hovered card, which is a fair trade against the alternative (`generateStaticParams` over ~250 countries) coupling every Netlify build to the API being awake.
+**The client router cache keeps dynamic pages for zero seconds by default.** Both routes here are dynamically rendered, and since v15 the `dynamic` entry of the Client Router Cache defaults to `0` — nothing is reused, so re-picking a region or reopening a country you were just looking at pays the whole RSC round-trip again. `experimental.staleTimes: { dynamic: 300 }` gives those entries a five-minute life, and since the cache key includes the search string, `/?region=Europe` and `/?region=Africa` are separate entries rather than one entry that clobbers itself. This is the part people install TanStack Query for; the App Router already has it, it just ships switched off. `experimental.dynamicOnHover` then covers the _first_ click, prefetching a country's full dynamic payload on hover instead of only its loading boundary — paid for with one server render per hovered card, which is a fair trade against the alternative (`generateStaticParams` over ~250 countries) coupling every deploy to the API being awake.
 
 **A changing `key` is the cleanest way to reset accumulated state.** `CountryGrid` accumulates pages as you scroll. When the search or region filter changes, all of that has to reset to page one. Instead of a `useEffect` that watches the props and resets several `useState`s, the page passes `key={`${name}|${region}`}`. The key changes, React unmounts and remounts the grid, and its initial state simply _is_ the new first page. The remount is the reset — no syncing logic to keep correct.
 
@@ -57,6 +56,6 @@ This is a solution to the [REST Countries API with color theme switcher challeng
 
 ## Author
 
-- UpWork - [Abdelrhman Abdelaal](https://upwork.com/freelancers/~01f0a9479696b61f49)
+- UpWork - [Abdelrhman Abdelaal](https://www.upwork.com/freelancers/mrblackvanta)
 - Frontend Mentor - [@MrBlackvanta](https://www.frontendmentor.io/profile/MrBlackvanta)
 - LinkedIn - [Abdelrhman Abdelaal](https://www.linkedin.com/in/abdelrhman-vanta/)
