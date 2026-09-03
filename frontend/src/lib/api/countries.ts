@@ -1,6 +1,7 @@
 import { Country, CountryDetail, PagedResult } from "@/types/country";
 
 const MAX_PAGE_SIZE = 100;
+const CACHE_SECONDS = 60 * 60;
 
 function apiUrl(path: string) {
   const base = process.env.API_URL;
@@ -22,7 +23,7 @@ export async function getCountries(params: {
   if (params.pageSize)
     url.searchParams.set("pageSize", params.pageSize.toString());
 
-  const res = await fetch(url, { next: { revalidate: 60 } });
+  const res = await fetch(url, { next: { revalidate: CACHE_SECONDS } });
   if (!res.ok) throw new Error(`Countries request failed: ${res.status}`);
   return res.json() as Promise<PagedResult<Country>>;
 }
@@ -43,7 +44,7 @@ export async function getCountryByCode(
   code: string,
 ): Promise<CountryDetail | null> {
   const url = apiUrl(`/countries/${encodeURIComponent(code)}`);
-  const res = await fetch(url, { next: { revalidate: 60 } });
+  const res = await fetch(url, { next: { revalidate: CACHE_SECONDS } });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Country request failed: ${res.status}`);
   return res.json() as Promise<CountryDetail>;

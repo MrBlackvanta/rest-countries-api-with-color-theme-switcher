@@ -9,6 +9,12 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "rest-countries-api-with-color-theme-switcher-cache"
+    }
+  ],
   "vars": {
     "API_URL": "https://vanta-rest-countries-api.onrender.com",
     "SITE_URL": "https://rest-countries-api-with-color-theme-switcher.abdelrhman-ahmed8881.workers.dev"
