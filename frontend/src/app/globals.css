@@ -6,7 +6,7 @@
   --color-dark-blue: hsl(209, 23%, 22%);
   --color-very-dark-blue: hsl(207, 26%, 17%);
   --color-very-dark-blue-2: hsl(200, 15%, 8%);
-  --color-dark-gray: hsl(0, 0%, 45%);
+  --color-dark-gray: hsl(0, 0%, 43%);
   --color-light-gray: hsl(0, 0%, 77%);
   --color-very-light-gray: hsl(0, 0%, 98%);
   --color-white: hsl(0, 0%, 100%);
@@ -28,12 +28,19 @@
   }
   button,
   a {
-    @apply v-focus-visible-ring;
+    @apply focus-visible:v-focus-ring;
   }
 }
 
-@utility v-focus-visible-ring {
-  @apply focus-visible:ring-very-dark-blue-2 focus-visible:ring-offset-very-dark-blue-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-white dark:focus-visible:ring-offset-white;
+@utility v-focus-ring {
+  @apply ring-very-dark-blue-2 ring-offset-very-dark-blue-2 ring-2 ring-offset-2 outline-none dark:ring-white dark:ring-offset-white;
+}
+
+@utility v-field-focus {
+  @apply motion-safe:transition-colors;
+  &:focus-visible {
+    @apply bg-very-dark-blue-2/5 dark:bg-white/10;
+  }
 }
 
 @utility v-footer-link {
