@@ -34,9 +34,8 @@ export function Select({ value, isPending, onChange }: SelectProps) {
     return () => document.removeEventListener("pointerdown", handlePointerDown);
   }, [open]);
 
-  const openMenu = () => {
-    const selectedIndex = REGIONS.indexOf(value);
-    setActiveIndex(selectedIndex === -1 ? 0 : selectedIndex);
+  const openMenu = (index = REGIONS.indexOf(value)) => {
+    setActiveIndex(index === -1 ? 0 : index);
     setOpen(true);
   };
 
@@ -48,6 +47,26 @@ export function Select({ value, isPending, onChange }: SelectProps) {
   const selectRegion = (region: string) => {
     onChange(region);
     close();
+  };
+
+  const handleTriggerKeyDown = (
+    event: React.KeyboardEvent<HTMLButtonElement>,
+  ) => {
+    switch (event.key) {
+      case "ArrowDown":
+      case "ArrowUp":
+        event.preventDefault();
+        openMenu();
+        break;
+      case "Home":
+        event.preventDefault();
+        openMenu(0);
+        break;
+      case "End":
+        event.preventDefault();
+        openMenu(REGIONS.length - 1);
+        break;
+    }
   };
 
   const handleListKeyDown = (event: React.KeyboardEvent<HTMLUListElement>) => {
@@ -94,6 +113,7 @@ export function Select({ value, isPending, onChange }: SelectProps) {
           aria-controls={listboxId}
           aria-label={value ? `Filter by Region: ${value}` : "Filter by Region"}
           onClick={() => (open ? setOpen(false) : openMenu())}
+          onKeyDown={handleTriggerKeyDown}
           className={`flex h-full grow cursor-pointer items-center justify-between gap-2 rounded-md ps-6 text-start ${
             value ? "pe-2" : "pe-6"
           }`}
@@ -136,10 +156,10 @@ export function Select({ value, isPending, onChange }: SelectProps) {
           open ? `${listboxId}-option-${activeIndex}` : undefined
         }
         onKeyDown={handleListKeyDown}
-        className={`dark:bg-dark-blue shadow-input absolute z-10 mt-1 w-full rounded-md bg-white py-4 transition-[opacity,translate,visibility] duration-200 ease-out focus:outline-none motion-reduce:transition-none ${
+        className={`dark:bg-dark-blue shadow-input absolute z-10 mt-1 w-full rounded-md bg-white py-4 duration-200 ease-out focus:outline-none motion-reduce:transition-none ${
           open
-            ? "visible translate-y-0 opacity-100"
-            : "pointer-events-none invisible -translate-y-2 opacity-0"
+            ? "visible translate-y-0 opacity-100 transition-[opacity,translate]"
+            : "pointer-events-none invisible -translate-y-2 opacity-0 transition-[opacity,translate,visibility]"
         }`}
       >
         {REGIONS.map((region, index) => (
